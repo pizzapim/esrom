@@ -17,10 +17,15 @@ defmodule UiWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-  end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", UiWeb do
-  #   pipe_through :api
-  # end
+    get "/ZZZZ", PageController, :instructions
+    get "/morse", PageController, :instructions
+    get "/esrom", PageController, :instructions
+
+    get "/0B13", PageController, :morse
+    get "/OB13", PageController, :morse
+    get "/seinlamp", PageController, :morse
+
+    get "/start", PageController, :start
+  end
 end
