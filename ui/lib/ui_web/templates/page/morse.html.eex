@@ -4,11 +4,14 @@
 
 <div id="buttonwrap">
   <input onclick="start()" value="Start" type="button" class="button">
+  <p>Response status:</p>
   <p id="response"></p>
 </div>
 
 <a href="http://www.geochecker.com/index.php?code=d9dbdc4542a4911a5f81a51bc9312a35&amp;action=check&amp;wp=47433743363432&amp;name=4573726f6d">en: check your coordinate on GeoChecker.com nl: controleer je co&ouml;rdinaat op GeoChecker.</a>
-<input type="button" onclick="givehint()" value="Click here for a hint!" id="stupidbutton">
+<br>
+<br>
+<input type="button" onclick="givehint()" value="Click here for a hint!" id="hintbutton">
 <div id="givehint" style="visibility:hidden">
   <p>en: Position yourself on the bridge. Watch carefully around to windows of houses, remember this is a nightly geocache. During daytime it is quite hard to see, but not impossible. After pushing the button, it takes 3
   seconds to start. The whole process takes about 35 sec. During the process it cannot be stopped nor restarted. You can start it all over again as much as you like. In case you are really stuck, you could try to contact me via WhatsApp on number +31 6 41633689. Best of luck to you!</p>
