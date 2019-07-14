@@ -21,12 +21,7 @@ defmodule Morse do
   """
 
   def signal do
-    case System.get_env("MORSE_MESSAGE") do
-      nil ->
-        # Signal for SOS if the env variable wasn't found :)
-        signal("...---...")
-      message -> signal(message)
-    end
+    signal(Application.fetch_env!(:morse, :morse_message))
   end
 
   def signal(symbols) do
