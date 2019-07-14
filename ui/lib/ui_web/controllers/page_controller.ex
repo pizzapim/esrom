@@ -22,7 +22,7 @@ defmodule UiWeb.PageController do
     case get_start_time() do
       start_time when start_time + 35 <= now ->
         System.put_env("MORSE_START_TIME", Integer.to_string(now))
-        Morse.signal("...---...")
+        Morse.signal()
         text(conn, "Done.")
       _ ->
         text(conn, "It is still in progress...")
