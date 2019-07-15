@@ -13,7 +13,7 @@ If you have found the source code before finding the geocache, consider it a hin
 Building:
 ```bash
 export MIX_ENV=prod && export MIX_TARGET=<device>
-cd ui/assets && npm install
+cd ui/assets && npm install && node node_modules/webpack/bin/webpack.js --mode production
 cd ../ && mix phx.digest
 cd ../firmware && mix deps.get
 mix firmware
