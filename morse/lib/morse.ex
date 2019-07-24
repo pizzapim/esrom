@@ -5,7 +5,6 @@ defmodule Morse do
   Functions to control the signal lamp connected with GPIO.
   """
 
-  @relay_pin 17
   @sleep_short 200
   @sleep_delay 400
   @sleep_long 700
@@ -25,7 +24,7 @@ defmodule Morse do
   end
 
   def signal(symbols) do
-    {:ok, gpio} = GPIO.open(@relay_pin, :output)
+    {:ok, gpio} = GPIO.open(relay_pin(), :output)
     GPIO.write(gpio, @off)
     Process.sleep(@sleep_start)
     signal_sentence(gpio, String.graphemes(symbols))
@@ -40,10 +39,12 @@ defmodule Morse do
 
   defp signal_sentence(gpio, [symbol | rest]) when symbol in [".", "-"] do
     GPIO.write(gpio, @on)
+
     case symbol do
       "." -> Process.sleep(@sleep_short)
       "-" -> Process.sleep(@sleep_long)
     end
+
     GPIO.write(gpio, @off)
 
     Process.sleep(@sleep_delay)
@@ -58,5 +59,9 @@ defmodule Morse do
 
   defp signal_sentence(_gpio, [symbol | _rest]) do
     {:error, "Undefined symbol: " <> symbol}
+  end
+
+  defp relay_pin() do
+    Application.fetch_env!(:morse, :relay_pin)
   end
 end
