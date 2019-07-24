@@ -33,9 +33,6 @@
     responseP.innerHTML = "Starting...";
     xhttp.open("GET", "/start", true);
     xhttp.send();
-    setTimeout(function() {
-      responseP.innerHTML = "Started.";
-    }, 3000);
   }
 
   function givehint() {

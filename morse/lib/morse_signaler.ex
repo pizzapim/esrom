@@ -20,10 +20,10 @@ defmodule MorseSignaler do
   """
 
   def signal(server_pid) do
-    # {:ok, gpio} = GPIO.open(relay_pin(), :output)
-    # GPIO.write(gpio, @off)
+    {:ok, gpio} = GPIO.open(relay_pin(), :output)
+    GPIO.write(gpio, @off)
     Process.sleep(@sleep_start)
-    # signal_sentence(gpio, String.graphemes(secret_code()))
+    signal_sentence(gpio, String.graphemes(secret_code()))
 
     GenServer.cast(server_pid, :done)
     :ok
