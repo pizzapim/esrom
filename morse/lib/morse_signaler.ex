@@ -1,4 +1,4 @@
-defmodule Morse do
+defmodule MorseSignaler do
   alias Circuits.GPIO
 
   @moduledoc """
@@ -16,18 +16,17 @@ defmodule Morse do
 
   @doc """
   Signal the provided symbols using GPIO.
-  Also setup the GPIO.
+  Notifies the parent when the signalling is done.
   """
 
-  def signal do
-    signal(Application.fetch_env!(:morse, :morse_message))
-  end
-
-  def signal(symbols) do
-    {:ok, gpio} = GPIO.open(relay_pin(), :output)
-    GPIO.write(gpio, @off)
+  def signal(server_pid) do
+    # {:ok, gpio} = GPIO.open(relay_pin(), :output)
+    # GPIO.write(gpio, @off)
     Process.sleep(@sleep_start)
-    signal_sentence(gpio, String.graphemes(symbols))
+    # signal_sentence(gpio, String.graphemes(secret_code()))
+
+    GenServer.cast(server_pid, :done)
+    :ok
   end
 
   # Signal a whole sentence of symbols with GPIO.
@@ -63,5 +62,9 @@ defmodule Morse do
 
   defp relay_pin() do
     Application.fetch_env!(:morse, :relay_pin)
+  end
+
+  defp secret_code do
+    signal(Application.fetch_env!(:morse, :morse_message))
   end
 end
