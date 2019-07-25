@@ -19,14 +19,11 @@ defmodule MorseSignaler do
   Notifies the parent when the signalling is done.
   """
 
-  def signal(server_pid) do
+  def signal() do
     {:ok, gpio} = GPIO.open(relay_pin(), :output)
     GPIO.write(gpio, @off)
     Process.sleep(@sleep_start)
     signal_sentence(gpio, String.graphemes(secret_code()))
-
-    GenServer.cast(server_pid, :done)
-    :ok
   end
 
   # Signal a whole sentence of symbols with GPIO.
@@ -65,6 +62,6 @@ defmodule MorseSignaler do
   end
 
   defp secret_code do
-    signal(Application.fetch_env!(:morse, :morse_message))
+    Application.fetch_env!(:morse, :morse_message)
   end
 end
