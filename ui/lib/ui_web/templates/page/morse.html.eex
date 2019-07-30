@@ -4,8 +4,12 @@
 
 <div id="buttonwrap">
   <input onclick="start()" value="Start" type="button" class="button">
-  <p>Response status:</p>
-  <p id="response"></p>
+  <div id="response-block" style="visibility:hidden">
+    <h2>Response status:</h2>
+    <p id="response"></p>
+    <h2>Progress:</h2>
+    <progress id="morse-progress" max="100" value="0">0%</progress>
+  </div>
 </div>
 
 <a href="http://www.geochecker.com/index.php?code=d9dbdc4542a4911a5f81a51bc9312a35&amp;action=check&amp;wp=47433743363432&amp;name=4573726f6d">en: check your coordinate on GeoChecker.com nl: controleer je co&ouml;rdinaat op GeoChecker.</a>
@@ -31,6 +35,7 @@
 
   function start() {
     responseP.innerHTML = "Starting...";
+    document.getElementById("response-block").style.visibility = "visible";
     xhttp.open("GET", "/start", true);
     xhttp.send();
   }

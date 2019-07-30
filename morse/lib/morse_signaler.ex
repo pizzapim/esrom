@@ -23,13 +23,23 @@ defmodule MorseSignaler do
     {:ok, gpio} = GPIO.open(relay_pin(), :output)
     GPIO.write(gpio, @off)
     Process.sleep(@sleep_start)
-    signal_sentence(gpio, String.graphemes(secret_code()))
+    update_progress(gpio, String.graphemes(secret_code()))
+  end
+
+  # Update progress for clients, and signals the rest of the sentence.
+  defp update_progress(gpio, symbols) do
+    100 - length(symbols) / String.length(secret_code()) * 100
+    |> MorseServer.update_progress()
+    if symbols != [] do
+      signal_sentence(gpio, symbols)
+    end
   end
 
   # Signal a whole sentence of symbols with GPIO.
   defp signal_sentence(gpio, []) do
     GPIO.write(gpio, @off)
     GPIO.close(gpio)
+    update_progress(gpio, [])
     :ok
   end
 
@@ -50,7 +60,7 @@ defmodule MorseSignaler do
   defp signal_sentence(gpio, [" " | rest]) do
     Process.sleep(@sleep_pause)
 
-    signal_sentence(gpio, rest)
+    update_progress(gpio, rest)
   end
 
   defp signal_sentence(_gpio, [symbol | _rest]) do
