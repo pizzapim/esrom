@@ -10,10 +10,11 @@ If you have found the source code before finding the geocache, consider it a hin
 - [Nerves](https://hexdocs.pm/nerves/installation.html)
 - [Phoenix](https://hexdocs.pm/phoenix/installation.html)
 
-Building:
+## Building
 ```bash
+cd ui/ && export SECRET_KEY_BASE="$(mix phx.gen.secret | tail -1)"
 export MIX_ENV=prod && export MIX_TARGET=<device>
-cd ui/assets && npm install && node node_modules/webpack/bin/webpack.js --mode production
+cd assets && npm install && node node_modules/webpack/bin/webpack.js --mode production
 cd ../ && mix phx.digest
 cd ../firmware && mix deps.get
 mix firmware
