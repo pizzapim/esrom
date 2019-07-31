@@ -12,8 +12,8 @@ channel.join()
 let progressBar = document.getElementById("morse-progress")
 
 channel.on("update", (content) => {
-  console.log(content["value"])
   progressBar.value = content["value"]
+  progressBar.innerHTML = content["value"]
 });
 
 export default socket
