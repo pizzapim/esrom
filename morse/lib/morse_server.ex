@@ -37,7 +37,7 @@ defmodule MorseServer do
   end
 
   @impl true
-  def handle_cast({:progress, new_progress}, {pid, _progress}) do
+  def handle_cast({:progress, new_progress}, {pid, progress}) do
     broadcast_progress(new_progress)
     {:noreply, {pid, new_progress}}
   end

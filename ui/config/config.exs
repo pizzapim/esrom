@@ -9,6 +9,7 @@ use Mix.Config
 
 # Configures the endpoint
 config :ui, UiWeb.Endpoint,
+  url: [host: "localhost"],
   secret_key_base: "FkfuB09FEncz4aAi6hS6w5bsNast+D1P12MckXr5dlRdhtFJrKqgEhvhpTU3qzgh",
   render_errors: [view: UiWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Ui.PubSub, adapter: Phoenix.PubSub.PG2]
