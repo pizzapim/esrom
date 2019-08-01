@@ -37,6 +37,6 @@ defmodule Morse.Server do
   end
 
   defp broadcast_progress(progress) do
-    UiWeb.Endpoint.broadcast("morse:progress", "update", %{value: progress})
+    GenServer.cast(Ui.SocketAPI, {:broadcast_progress, progress})
   end
 end
