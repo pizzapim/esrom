@@ -1,13 +1,7 @@
-defmodule MorseServer do
+defmodule Morse.Server do
   use GenServer
-  use Application
 
-  @impl true
-  def start(_type, _args) do
-    start_link()
-  end
-
-  def start_link do
+  def start_link(_) do
     GenServer.start_link(__MODULE__, {nil, 0}, name: __MODULE__)
   end
 
@@ -28,7 +22,7 @@ defmodule MorseServer do
   def handle_call(:start, _from, {pid, _progress} = state) do
     cond do
       pid == nil or not Process.alive?(pid) ->
-        pid = spawn(&MorseSignaler.signal/0)
+        pid = spawn(&Morse.Worker.signal/0)
         {:reply, :ok, {pid, 0}}
 
       true ->

@@ -16,7 +16,7 @@ defmodule Morse.MixProject do
     [
       extra_applications: [:logger],
       env: [morse_message: "...---...", relay_pin: 17],
-      mod: {MorseServer, []}
+      mod: {Morse.Application, []}
     ]
   end
 

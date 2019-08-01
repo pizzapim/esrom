@@ -15,7 +15,7 @@ defmodule UiWeb.PageController do
 
   def start(conn, _params) do
     response =
-      case MorseServer.start_morse() do
+      case Morse.Server.start_morse() do
         :ok -> "Started."
         {:error, :already_started} -> "The process is still in progress..."
       end

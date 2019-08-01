@@ -1,4 +1,4 @@
-defmodule MorseSignaler do
+defmodule Morse.Worker do
   alias Circuits.GPIO
 
   @moduledoc """
@@ -29,7 +29,7 @@ defmodule MorseSignaler do
   # Update progress for clients, and signals the rest of the sentence.
   defp update_progress(gpio, symbols) do
     100 - length(symbols) / String.length(secret_code()) * 100
-    |> MorseServer.update_progress()
+    |> Morse.Server.update_progress()
     if symbols != [] do
       signal_sentence(gpio, symbols)
     end
