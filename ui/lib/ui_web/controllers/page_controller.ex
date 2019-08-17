@@ -2,7 +2,7 @@ defmodule UiWeb.PageController do
   use UiWeb, :controller
 
   def index(conn, _params) do
-    conn |> send_resp(201, "")
+    conn |> send_resp(204, "")
   end
 
   def instructions(conn, _params) do
