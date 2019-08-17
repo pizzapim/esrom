@@ -15,56 +15,51 @@ defmodule Morse.Worker do
   @off 1
 
   @doc """
-  Signal the provided symbols using GPIO.
-  Notifies the parent when the signalling is done.
+  Signal the provided morse symbols using the GPIO.
   """
 
-  def signal() do
+  def signal do
+    code = secret_code()
+    code_length = length(code)
+
+    update_progress(0, code_length)
+
     {:ok, gpio} = GPIO.open(relay_pin(), :output)
     GPIO.write(gpio, @off)
     Process.sleep(@sleep_start)
-    update_progress(gpio, String.graphemes(secret_code()))
+
+    code
+    |> Enum.with_index()
+    |> Enum.each(&signal_symbol(gpio, &1, code_length))
+
+    update_progress(100, 100)
   end
 
-  # Update progress for clients, and signals the rest of the sentence.
-  defp update_progress(gpio, symbols) do
-    100 - length(symbols) / String.length(secret_code()) * 100
-    |> Morse.Server.update_progress()
-    if symbols != [] do
-      signal_sentence(gpio, symbols)
-    end
-  end
-
-  # Signal a whole sentence of symbols with GPIO.
-  defp signal_sentence(gpio, []) do
-    GPIO.write(gpio, @off)
-    GPIO.close(gpio)
-    update_progress(gpio, [])
-    :ok
-  end
-
-  defp signal_sentence(gpio, [symbol | rest]) when symbol in [".", "-"] do
+  defp signal_symbol(gpio, {'.', _index}, _length) do
     GPIO.write(gpio, @on)
-
-    case symbol do
-      "." -> Process.sleep(@sleep_short)
-      "-" -> Process.sleep(@sleep_long)
-    end
-
+    Process.sleep(@sleep_short)
     GPIO.write(gpio, @off)
-
     Process.sleep(@sleep_delay)
-    signal_sentence(gpio, rest)
   end
 
-  defp signal_sentence(gpio, [" " | rest]) do
+  defp signal_symbol(gpio, {'-', _index}, _length) do
+    GPIO.write(gpio, @on)
+    Process.sleep(@sleep_long)
+    GPIO.write(gpio, @off)
+    Process.sleep(@sleep_delay)
+  end
+
+  defp signal_symbol(_gpio, {' ', index}, length) do
     Process.sleep(@sleep_pause)
-
-    update_progress(gpio, rest)
+    update_progress(index, length)
   end
 
-  defp signal_sentence(_gpio, [symbol | _rest]) do
-    {:error, "Undefined symbol: " <> symbol}
+  defp signal_symbol(_gpio, {symbol, _index}, _length) do
+    {:error, "Undefined symbol: " <> <<symbol :: utf8>>}
+  end
+
+  defp update_progress(index, length) do
+    Morse.Server.update_progress(index / length * 100)
   end
 
   defp relay_pin() do
@@ -73,5 +68,6 @@ defmodule Morse.Worker do
 
   defp secret_code do
     Application.fetch_env!(:morse, :morse_message)
+    |> String.to_charlist()
   end
 end

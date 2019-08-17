@@ -20,23 +20,17 @@ defmodule Morse.Server do
 
   @impl true
   def handle_call(:start, _from, {pid, _progress} = state) do
-    cond do
-      pid == nil or not Process.alive?(pid) ->
-        pid = spawn(&Morse.Worker.signal/0)
-        {:reply, :ok, {pid, 0}}
-
-      true ->
-        {:reply, {:error, :already_started}, state}
+    if pid == nil or not Process.alive?(pid) do
+      pid = spawn(&Morse.Worker.signal/0)
+      {:reply, :ok, {pid, 0}}
+    else
+      {:reply, {:error, :already_started}, state}
     end
   end
 
   @impl true
   def handle_cast({:progress, new_progress}, {pid, _progress}) do
-    broadcast_progress(new_progress)
+    GenServer.cast(Ui.SocketAPI, {:broadcast_progress, new_progress})
     {:noreply, {pid, new_progress}}
-  end
-
-  defp broadcast_progress(progress) do
-    GenServer.cast(Ui.SocketAPI, {:broadcast_progress, progress})
   end
 end
