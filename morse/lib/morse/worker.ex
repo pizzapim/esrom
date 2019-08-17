@@ -22,7 +22,7 @@ defmodule Morse.Worker do
     code = secret_code()
     code_length = length(code)
 
-    update_progress(0, code_length)
+    update_progress(0, 100)
 
     {:ok, gpio} = GPIO.open(relay_pin(), :output)
     GPIO.write(gpio, @off)
@@ -35,27 +35,23 @@ defmodule Morse.Worker do
     update_progress(100, 100)
   end
 
-  defp signal_symbol(gpio, {'.', _index}, _length) do
+  defp signal_symbol(gpio, {?., _index}, _length) do
     GPIO.write(gpio, @on)
     Process.sleep(@sleep_short)
     GPIO.write(gpio, @off)
     Process.sleep(@sleep_delay)
   end
 
-  defp signal_symbol(gpio, {'-', _index}, _length) do
+  defp signal_symbol(gpio, {?-, _index}, _length) do
     GPIO.write(gpio, @on)
     Process.sleep(@sleep_long)
     GPIO.write(gpio, @off)
     Process.sleep(@sleep_delay)
   end
 
-  defp signal_symbol(_gpio, {' ', index}, length) do
+  defp signal_symbol(_gpio, {? , index}, length) do
     Process.sleep(@sleep_pause)
     update_progress(index, length)
-  end
-
-  defp signal_symbol(_gpio, {symbol, _index}, _length) do
-    {:error, "Undefined symbol: " <> <<symbol :: utf8>>}
   end
 
   defp update_progress(index, length) do
