@@ -63,7 +63,7 @@ defmodule Firmware.MixProject do
   def release do
     [
       overwrite: true,
-      cookie: "testcookie",
+      cookie: "tastycookie",
       include_erts: &Nerves.Release.erts/0,
       steps: [&Nerves.Release.init/1, :assemble]
     ]

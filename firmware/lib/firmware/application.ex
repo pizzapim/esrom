@@ -22,7 +22,7 @@ defmodule Firmware.Application do
   # List all child processes to be supervised
   def children(:host) do
     {:ok, _} = Node.start(:"host@0.0.0.0")
-    Node.set_cookie(:testcookie)
+    Node.set_cookie(:tastycookie)
     true = Node.connect(:"esrom@esrom.lan")
     []
   end

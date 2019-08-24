@@ -67,11 +67,9 @@ defmodule Morse.Worker do
       end
 
     _ ->
-      alias Circuits.GPIO
-
       def toggle_lamp(state) do
-        {:ok, gpio} = GPIO.open(relay_pin(), :output)
-        GPIO.write(gpio, state)
+        {:ok, gpio} = Circuits.GPIO.open(relay_pin(), :output)
+        Circuits.GPIO.write(gpio, state)
       end
 
       defp relay_pin() do
