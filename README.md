@@ -3,6 +3,8 @@ Source code for [the esrom geocache](https://www.geocaching.com/geocache/GC7C642
 
 If you have found the source code before finding the geocache, consider it a hint :)
 
+![built with nerves](https://nerves-project.org/images/badge/nerves-badge_100x52_black.png)
+
 ## Setup (for future me)
 - elixir 1.9.0-otp-22
 - erlang 22.0.4
