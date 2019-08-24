@@ -23,7 +23,7 @@ defmodule Firmware.Application do
   def children(:host) do
     {:ok, _} = Node.start(:"host@0.0.0.0")
     Node.set_cookie(:testcookie)
-    true = Node.connect(:"esrom@nerves.local")
+    true = Node.connect(:"esrom@esrom.lan")
     []
   end
 

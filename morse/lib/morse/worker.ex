@@ -63,7 +63,7 @@ defmodule Morse.Worker do
   case Mix.Nerves.Utils.mix_target() do
     :host ->
       def toggle_lamp(state) do
-        :rpc.call(:"esrom@nerves.local", Morse.Worker, :toggle_lamp, [state])
+        :rpc.call(:"esrom@esrom.lan", Morse.Worker, :toggle_lamp, [state])
       end
 
     _ ->
