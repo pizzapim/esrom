@@ -28,6 +28,8 @@ config :logger, backends: [RingLogger]
 
 config :phoenix, :json_library, Jason
 
+config :morse, :progress_socket, UiWeb.UserSocket
+
 if Mix.target() != :host do
   "target.exs"
 else

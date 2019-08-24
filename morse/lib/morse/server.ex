@@ -30,7 +30,11 @@ defmodule Morse.Server do
 
   @impl true
   def handle_cast({:progress, new_progress}, {pid, _progress}) do
-    GenServer.cast(Ui.SocketAPI, {:broadcast_progress, new_progress})
+    apply(progress_socket(), :broadcast_progress, [new_progress])
     {:noreply, {pid, new_progress}}
+  end
+
+  defp progress_socket do
+    Application.fetch_env!(:morse, :progress_socket)
   end
 end

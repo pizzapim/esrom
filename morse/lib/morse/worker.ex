@@ -49,7 +49,7 @@ defmodule Morse.Worker do
     Process.sleep(@sleep_delay)
   end
 
-  defp signal_symbol(_gpio, {? , index}, length) do
+  defp signal_symbol(_gpio, {?\s, index}, length) do
     Process.sleep(@sleep_pause)
     update_progress(index, length)
   end
