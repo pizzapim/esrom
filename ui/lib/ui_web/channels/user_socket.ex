@@ -32,7 +32,6 @@ defmodule UiWeb.UserSocket do
   def id(_socket), do: nil
 
   def broadcast_progress(progress) do
-    IO.puts("in user socket!")
     UiWeb.Endpoint.broadcast("morse:progress", "update", %{value: progress})
   end
 end

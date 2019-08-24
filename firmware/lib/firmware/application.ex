@@ -21,11 +21,10 @@ defmodule Firmware.Application do
 
   # List all child processes to be supervised
   def children(:host) do
-    [
-      # Children that only run on the host
-      # Starts a worker by calling: Firmware.Worker.start_link(arg)
-      # {Firmware.Worker, arg},
-    ]
+    {:ok, _} = Node.start(:"host@0.0.0.0")
+    Node.set_cookie(:testcookie)
+    true = Node.connect(:"esrom@nerves.local")
+    []
   end
 
   def children(_target) do

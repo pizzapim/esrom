@@ -1,6 +1,4 @@
 defmodule Morse.Worker do
-  alias Circuits.GPIO
-
   @moduledoc """
   Functions to control the signal lamp connected with GPIO.
   """
@@ -24,32 +22,31 @@ defmodule Morse.Worker do
 
     update_progress(0, 100)
 
-    {:ok, gpio} = GPIO.open(relay_pin(), :output)
-    GPIO.write(gpio, @off)
+    toggle_lamp(@off)
     Process.sleep(@sleep_start)
 
     code
     |> Enum.with_index()
-    |> Enum.each(&signal_symbol(gpio, &1, code_length))
+    |> Enum.each(&signal_symbol(&1, code_length))
 
     update_progress(100, 100)
   end
 
-  defp signal_symbol(gpio, {?., _index}, _length) do
-    GPIO.write(gpio, @on)
+  defp signal_symbol({?., _index}, _length) do
+    toggle_lamp(@on)
     Process.sleep(@sleep_short)
-    GPIO.write(gpio, @off)
+    toggle_lamp(@off)
     Process.sleep(@sleep_delay)
   end
 
-  defp signal_symbol(gpio, {?-, _index}, _length) do
-    GPIO.write(gpio, @on)
+  defp signal_symbol({?-, _index}, _length) do
+    toggle_lamp(@on)
     Process.sleep(@sleep_long)
-    GPIO.write(gpio, @off)
+    toggle_lamp(@off)
     Process.sleep(@sleep_delay)
   end
 
-  defp signal_symbol(_gpio, {?\s, index}, length) do
+  defp signal_symbol({?\s, index}, length) do
     Process.sleep(@sleep_pause)
     update_progress(index, length)
   end
@@ -58,12 +55,27 @@ defmodule Morse.Worker do
     Morse.Server.update_progress(index / length * 100)
   end
 
-  defp relay_pin() do
-    Application.fetch_env!(:morse, :relay_pin)
-  end
-
   defp secret_code do
     Application.fetch_env!(:morse, :morse_message)
     |> String.to_charlist()
+  end
+
+  case Mix.Nerves.Utils.mix_target() do
+    :host ->
+      def toggle_lamp(state) do
+        :rpc.call(:"esrom@nerves.local", Morse.Worker, :toggle_lamp, [state])
+      end
+
+    _ ->
+      alias Circuits.GPIO
+
+      def toggle_lamp(state) do
+        {:ok, gpio} = GPIO.open(relay_pin(), :output)
+        GPIO.write(gpio, state)
+      end
+
+      defp relay_pin() do
+        Application.fetch_env!(:morse, :relay_pin)
+      end
   end
 end
