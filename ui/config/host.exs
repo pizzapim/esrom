@@ -4,7 +4,6 @@ config :ui, UiWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "FkfuB09FEncz4aAi6hS6w5bsNast+D1P12MckXr5dlRdhtFJrKqgEhvhpTU3qzgh",
   render_errors: [view: UiWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Ui.PubSub, adapter: Phoenix.PubSub.PG2],
   http: [port: 4000],
   server: true,
   debug_errors: true,
@@ -18,19 +17,16 @@ config :ui, UiWeb.Endpoint,
       "--watch-stdin",
       cd: Path.expand("../assets", __DIR__)
     ]
-  ]
-
-config :ui, UiWeb.Endpoint,
+  ],
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/ui_web/{live,views}/.*(ex)$",
-      ~r"lib/ui_web/templates/.*(eex)$"
+      ~r"lib/ui_web/templates/.*(eex)$",
+      ~r{lib/ui_web/live/.*(ex)$}
     ]
   ]
-
-config :logger, :console, format: "[$level] $message\n"
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.

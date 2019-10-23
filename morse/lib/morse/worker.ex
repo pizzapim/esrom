@@ -60,7 +60,7 @@ defmodule Morse.Worker do
     |> String.to_charlist()
   end
 
-  case Mix.Nerves.Utils.mix_target() do
+  case Application.get_env(:ui, :target) do
     :host ->
       def toggle_lamp(state) do
         :rpc.call(:"esrom@esrom.lan", Morse.Worker, :toggle_lamp, [state])

@@ -3,12 +3,12 @@
 <h2>nl:<br>Druk op de Start knop hieronder om <span style="color:red">UVW</span><span style="color:blue">XYZ</span> te vinden. Je kunt dan de geocache vinden op N 52&deg; 40.<span style="color:red">UVW</span>' E 004&deg; 53.<span style="color:blue">XYZ</span>'</h2>
 
 <div id="buttonwrap">
-  <input onclick="start()" value="Start" type="button" class="button">
-  <div id="response-block" style="visibility:hidden">
+  <button phx-click="start_morse" class="button">Start</button>
+  <div id="response-block">
     <h2>Response status:</h2>
     <p id="response"></p>
     <h2>Progress:</h2>
-    <progress id="morse-progress" max="100" value="0">0%</progress>
+    <progress max="100" value="<%= @progress %>"><%= @progress %>%</progress>
   </div>
 </div>
 
@@ -24,22 +24,6 @@
 </div>
 
 <script>
-  var responseP = document.getElementById("response");
-  var xhttp = new XMLHttpRequest();
-
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      responseP.innerHTML = this.responseText;
-    }
-  };
-
-  function start() {
-    responseP.innerHTML = "Starting...";
-    document.getElementById("response-block").style.visibility = "visible";
-    xhttp.open("GET", "/start", true);
-    xhttp.send();
-  }
-
   function givehint() {
     document.getElementById("givehint").style.visibility = "visible";
   }

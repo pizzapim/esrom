@@ -26,13 +26,6 @@ config :shoehorn,
 
 config :logger, backends: [RingLogger]
 
-config :phoenix, :json_library, Jason
+import_config("target.exs")
 
-config :morse, :progress_socket, UiWeb.UserSocket
-
-if Mix.target() != :host do
-  "target.exs"
-else
-  "host.exs"
-end
-|> import_config()
+import_config("../../ui/config/config.exs")

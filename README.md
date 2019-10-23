@@ -10,6 +10,12 @@ If you have found the source code before finding the geocache, consider it a hin
 - [Nerves](https://hexdocs.pm/nerves/installation.html)
 - [Phoenix](https://hexdocs.pm/phoenix/installation.html)
 
+## dev
+- Run `epmd` in the background so it can function as a distributed system with the pi.
+- Run `cd ui && mix deps.get` to install Elixir dependencies.
+- Run `cd assets && npm install && cd ..` to install npm dependencies.
+- Run `mix phx.server` to start the server.
+
 ## Building
 ```bash
 cd ui/ && export SECRET_KEY_BASE="$(mix phx.gen.secret | tail -1)"

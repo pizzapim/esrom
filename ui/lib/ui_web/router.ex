@@ -5,6 +5,7 @@ defmodule UiWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
+    plug Phoenix.LiveView.Flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -26,6 +27,6 @@ defmodule UiWeb.Router do
     get "/OB13", PageController, :morse
     get "/seinlamp", PageController, :morse
 
-    get "/start", PageController, :start
+    # get "/start", PageController, :start
   end
 end
