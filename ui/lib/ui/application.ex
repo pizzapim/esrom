@@ -23,7 +23,7 @@ defmodule Ui.Application do
   def children(:host) do
     {:ok, _} = Node.start(:"host@0.0.0.0")
     Node.set_cookie(:tastycookie)
-    true = Node.connect(:"esrom@esrom.lan")
+    Node.connect(:"esrom@esrom.lan")
     []
   end
 

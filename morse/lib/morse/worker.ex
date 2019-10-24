@@ -3,6 +3,8 @@ defmodule Morse.Worker do
   Functions to control the signal lamp connected with GPIO.
   """
 
+  @esrom_node :"esrom@esrom.lan"
+
   @sleep_short 200
   @sleep_delay 400
   @sleep_long 700
@@ -60,10 +62,14 @@ defmodule Morse.Worker do
     |> String.to_charlist()
   end
 
+  # Communicate with a deployed esrom node, if running on a host.
   case Application.get_env(:ui, :target) do
     :host ->
       def toggle_lamp(state) do
-        :rpc.call(:"esrom@esrom.lan", Morse.Worker, :toggle_lamp, [state])
+        # Check if the deployed esrom node is online.
+        if :pong == Node.ping(@esrom_node) do
+          :rpc.call(@esrom_node, Morse.Worker, :toggle_lamp, [state])
+        end
       end
 
     _ ->
