@@ -7,13 +7,16 @@ defmodule UiWeb.MorseLive do
     UiWeb.PageView.render("morse.html", assigns)
   end
 
-  def mount(_session, socket) do
+  def mount(%{ip: ip}, socket) do
     UiWeb.Endpoint.subscribe(@topic)
-    {:ok, assign(socket, default_assigns())}
+    {:ok, assign(socket, default_assigns(ip))}
   end
 
-  def handle_event("start_morse", _value, socket) do
-    Morse.Server.start_morse()
+  def handle_event("start_morse", _value, %{assigns: %{ip: ip}} = socket) do
+    if :ok == Morse.Server.start_morse() do
+      spawn fn -> Ui.TelegramBot.message("#{ip} pressed the button!") end
+    end
+
     {:noreply, socket}
   end
 
@@ -25,11 +28,12 @@ defmodule UiWeb.MorseLive do
     {:noreply, assign(socket, progress: progress, in_progress?: Morse.Server.in_progress?())}
   end
 
-  defp default_assigns do
+  defp default_assigns(ip) do
     [
       progress: Morse.Server.progress(),
       in_progress?: Morse.Server.in_progress?(),
-      hints_visible: false
+      hints_visible: false,
+      ip: ip
     ]
   end
 end

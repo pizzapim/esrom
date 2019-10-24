@@ -10,8 +10,8 @@ defmodule UiWeb.PageController do
     render(conn, :instructions)
   end
 
-  def morse(conn, _params) do
-    LiveView.Controller.live_render(conn, UiWeb.MorseLive, session: %{})
+  def morse(%{remote_ip: ip} = conn, _params) do
+    ip = ip |> Tuple.to_list |> Enum.join(".")
+    LiveView.Controller.live_render(conn, UiWeb.MorseLive, session: %{ip: ip})
   end
-
 end
