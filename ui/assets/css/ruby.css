@@ -35,6 +35,10 @@ p {
     height: 100px;
 }
 
+.button[disabled=disabled] {
+  background-color: gray;
+}
+
 #hintbutton {
     background-color: white;
     font-size: 15px;

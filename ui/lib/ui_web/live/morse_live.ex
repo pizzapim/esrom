@@ -9,7 +9,7 @@ defmodule UiWeb.MorseLive do
 
   def mount(_session, socket) do
     UiWeb.Endpoint.subscribe(@topic)
-    {:ok, assign(socket, progress: Morse.Server.progress())}
+    {:ok, assign(socket, default_assigns())}
   end
 
   def handle_event("start_morse", _value, socket) do
@@ -19,5 +19,11 @@ defmodule UiWeb.MorseLive do
 
   def handle_info(progress, socket) do
     {:noreply, assign(socket, progress: progress)}
+  end
+
+  defp default_assigns do
+    [
+      progress: Morse.Server.progress(),
+    ]
   end
 end

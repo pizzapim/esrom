@@ -3,7 +3,7 @@
 <h2>nl:<br>Druk op de Start knop hieronder om <span style="color:red">UVW</span><span style="color:blue">XYZ</span> te vinden. Je kunt dan de geocache vinden op N 52&deg; 40.<span style="color:red">UVW</span>' E 004&deg; 53.<span style="color:blue">XYZ</span>'</h2>
 
 <div id="buttonwrap">
-  <button phx-click="start_morse" class="button">Start</button>
+  <button phx-click="start_morse" class="button" <%= if @progress != 100, do: ~s(disabled=disabled) %>>Start</button>
   <div id="response-block">
     <h2>Response status:</h2>
     <p id="response"></p>
