@@ -17,6 +17,10 @@ defmodule Morse.Server do
     GenServer.call(__MODULE__, :progress)
   end
 
+  def in_progress? do
+    GenServer.call(__MODULE__, :in_progress?)
+  end
+
   @impl true
   def init(state) do
     {:ok, state}
@@ -24,16 +28,20 @@ defmodule Morse.Server do
 
   @impl true
   def handle_call(:start, _from, {pid, _progress} = state) do
-    if pid == nil or not Process.alive?(pid) do
+    if worker_alive?(pid) do
+      {:reply, {:error, :already_started}, state}
+    else
       pid = spawn(&Morse.Worker.signal/0)
       {:reply, :ok, {pid, 0}}
-    else
-      {:reply, {:error, :already_started}, state}
     end
   end
 
   def handle_call(:progress, _from, {_pid, progress} = state) do
     {:reply, progress, state}
+  end
+
+  def handle_call(:in_progress?, _from, {pid, _progress} = state) do
+    {:reply, worker_alive?(pid), state}
   end
 
   @impl true
@@ -44,5 +52,9 @@ defmodule Morse.Server do
 
   defp pubsub do
     Application.fetch_env!(:morse, :pubsub)
+  end
+
+  defp worker_alive?(pid) do
+    pid != nil and Process.alive?(pid)
   end
 end

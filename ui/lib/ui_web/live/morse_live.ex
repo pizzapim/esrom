@@ -17,13 +17,19 @@ defmodule UiWeb.MorseLive do
     {:noreply, socket}
   end
 
+  def handle_event("toggle_hint", _value, socket) do
+    {:noreply, update(socket, :hints_visible, &(not &1))}
+  end
+
   def handle_info(progress, socket) do
-    {:noreply, assign(socket, progress: progress)}
+    {:noreply, assign(socket, progress: progress, in_progress?: Morse.Server.in_progress?())}
   end
 
   defp default_assigns do
     [
       progress: Morse.Server.progress(),
+      in_progress?: Morse.Server.in_progress?(),
+      hints_visible: false
     ]
   end
 end
