@@ -13,9 +13,10 @@ defmodule UiWeb.MorseLive do
   end
 
   def handle_event("toggle_morse", _value, %{assigns: %{ip: ip}} = socket) do
-    if Morse.Server.in_progress?() and ip != "127.0.0.1" do
+    if not Morse.Server.in_progress?() and ip != "127.0.0.1" do
       spawn fn -> Ui.TelegramBot.message("#{ip} pressed the button!") end
     end
+
     Morse.Server.toggle_morse()
 
     {:noreply, socket}
