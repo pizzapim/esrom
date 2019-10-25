@@ -4,9 +4,9 @@
 
 <div id="buttonwrap">
   <%= if @in_progress? do %>
-  <button phx-click="start_morse" class="button" <%= if @in_progress?, do: ~s(disabled=disabled) %>>In progress...</button>
+    <button phx-click="toggle_morse" class="button stop">Stop</button>
   <% else %>
-    <button phx-click="start_morse" class="button">Start</button>
+    <button phx-click="toggle_morse" class="button">Start</button>
   <% end %>
   <div id="response-block">
     <h2>Progress:</h2>

@@ -5,8 +5,8 @@ defmodule Morse.Server do
     GenServer.start_link(__MODULE__, {nil, 0}, name: __MODULE__)
   end
 
-  def start_morse do
-    GenServer.call(__MODULE__, :start)
+  def toggle_morse do
+    GenServer.call(__MODULE__, :toggle)
   end
 
   def update_progress(progress) do
@@ -27,9 +27,11 @@ defmodule Morse.Server do
   end
 
   @impl true
-  def handle_call(:start, _from, {pid, _progress} = state) do
+  def handle_call(:toggle, _from, {pid, _progress}) do
     if worker_alive?(pid) do
-      {:reply, {:error, :already_started}, state}
+      Morse.Worker.kill(pid)
+      apply(pubsub(), :broadcast, [Ui.PubSub, "morse_progress", 0])
+      {:reply, :ok, {nil, 0}}
     else
       pid = spawn(&Morse.Worker.signal/0)
       {:reply, :ok, {pid, 0}}

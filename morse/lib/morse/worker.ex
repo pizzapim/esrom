@@ -32,6 +32,11 @@ defmodule Morse.Worker do
     update_progress(100, 100)
   end
 
+  def kill(pid) do
+    Process.exit(pid, :kill)
+    toggle_lamp(@off)
+  end
+
   defp signal_symbol({?., _index}, _length) do
     toggle_lamp(@on)
     Process.sleep(@sleep_short)
