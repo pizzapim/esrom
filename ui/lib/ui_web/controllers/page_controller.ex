@@ -11,7 +11,10 @@ defmodule UiWeb.PageController do
   end
 
   def morse(conn, _params) do
-    ip = conn |> Plug.Conn.get_req_header("x-real-ip") |> hd()
+    ip = case Plug.Conn.get_req_header(conn, "x-real-ip") do
+      [h|_tl] -> h
+      _ -> "0.0.0.0"
+    end
     LiveView.Controller.live_render(conn, UiWeb.MorseLive, session: %{ip: ip})
   end
 end
