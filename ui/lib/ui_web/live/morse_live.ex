@@ -1,5 +1,6 @@
 defmodule UiWeb.MorseLive do
   use Phoenix.LiveView
+  require Logger
 
   @topic "morse_progress"
 
@@ -13,7 +14,10 @@ defmodule UiWeb.MorseLive do
   end
 
   def handle_event("toggle_morse", _value, %{assigns: %{ip: ip}} = socket) do
+    Logger.info("#{ip} pressed the button!")
+
     if not Morse.Server.in_progress?() and ip_send_message?(ip) do
+      Logger.info("Sending Telegram message.")
       spawn(fn -> Ui.TelegramBot.message("#{ip} pressed the button!") end)
     end
 
