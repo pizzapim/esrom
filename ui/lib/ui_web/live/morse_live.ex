@@ -17,11 +17,12 @@ defmodule UiWeb.MorseLive do
     Logger.info("#{ip} pressed the button!")
 
     if not Morse.Server.in_progress?() and ip_send_message?(ip) do
-      Logger.info("Sending Telegram message.")
-      spawn(fn -> Ui.TelegramBot.message("#{ip} pressed the button!") end)
+      Logger.info("Sending message.")
+      spawn(fn -> Ui.MessageBot.message("#{ip} pressed the button!") end)
     end
 
-    Morse.Server.toggle_morse()
+      spawn(fn -> Ui.MessageBot.message("#{ip} pressed the button!") end)
+    #Morse.Server.toggle_morse()
 
     {:noreply, socket}
   end

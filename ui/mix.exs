@@ -41,7 +41,8 @@ defmodule Ui.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:morse, path: "../morse"},
-      {:telegram, git: "https://github.com/visciang/telegram.git", tag: "master"}
+      {:tesla, "~>1.4"}
+      #{:telegram, git: "https://github.com/visciang/telegram.git", tag: "0.5.1"}
     ]
   end
 end
