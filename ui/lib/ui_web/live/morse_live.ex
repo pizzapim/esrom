@@ -21,8 +21,7 @@ defmodule UiWeb.MorseLive do
       spawn(fn -> Ui.MessageBot.message("#{ip} pressed the button!") end)
     end
 
-      spawn(fn -> Ui.MessageBot.message("#{ip} pressed the button!") end)
-    #Morse.Server.toggle_morse()
+    Morse.Server.toggle_morse()
 
     {:noreply, socket}
   end
